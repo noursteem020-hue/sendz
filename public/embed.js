@@ -1,4 +1,4 @@
-// MailCheap's signup form for your site: put this tag where the form goes.
+// Sendz's signup form for your site: put this tag where the form goes.
 // <script src="https://<server>/embed.js" data-form="<newsletter id>" async></script>
 (function () {
 	var script = document.currentScript;

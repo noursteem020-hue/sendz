@@ -16,7 +16,7 @@ Read this before working on Sendz. If `AGENTS.cloud.md` is next to it (Sendz Clo
 
 Sendz is a newsletter app: write an issue, send it to your list, publish it on the web. Everything the dashboard does also works from an AI agent, through a REST API and an MCP server.
 
-It's open source under the AGPL-3.0 (`LICENSE`): anyone can run it on their own server with their own Amazon SES or PostShiba account, change it and share it. The README is the self-hosting guide. Sendz Cloud ([mailcheap.ai](https://mailcheap.ai)) runs this same code for people who'd rather not host it.
+It's open source under the AGPL-3.0 (`LICENSE`): anyone can run it on their own server with their own Amazon SES or PostShiba account, change it and share it. The README is the self-hosting guide. Sendz Cloud ([sendz.ai](https://sendz.ai)) runs this same code for people who'd rather not host it.
 
 ## How it's organized
 
@@ -34,14 +34,14 @@ Next.js App Router in JavaScript, Tailwind CSS with shadcn/ui, MongoDB through M
 
 ## Sendz Cloud and self-hosting
 
-`isCloud()` in `lib/config.js` is `MAILCHEAP_CLOUD === "true"`, what mailcheap.ai runs with: open sign-up, plans and Stripe billing. Anything else is a self-hosted server: only the allowlist (`ADMIN_EMAILS`, `ALLOWED_EMAILS`) signs in, there's no billing and no limits. Both run from the same files, so a change has to work in both modes.
+`isCloud()` in `lib/config.js` is `MAILCHEAP_CLOUD === "true"`, what sendz.ai runs with: open sign-up, plans and Stripe billing. Anything else is a self-hosted server: only the allowlist (`ADMIN_EMAILS`, `ALLOWED_EMAILS`) signs in, there's no billing and no limits. Both run from the same files, so a change has to work in both modes.
 
 Sendz Cloud's marketing site, analytics and support chat aren't part of the open source. Shared code reaches them only through the site extensions, `lib/site-extensions.js` and `components/SiteExtensions.jsx`, whose defaults add nothing: never import cloud-only code anywhere else.
 
 ## Rules
 
 - The code is public: never commit secrets, keys, tokens or personal data (emails, phone numbers, addresses, customers' data), in code, tests, fixtures or commit messages. Tests use `example.com` and made-up values.
-- Write "Sendz" in display text: copy, titles, emails, docs, comments. Lowercase in identifiers and machine names: `mailcheap.ai`, `MAILCHEAP_CLOUD`, `LogoMailcheap`, package and file names.
+- Write "Sendz" in display text: copy, titles, emails, docs, comments. Lowercase in identifiers and machine names: `sendz.ai`, `MAILCHEAP_CLOUD`, `LogoMailcheap`, package and file names.
 - Copy is plain and short, in sentence case: only the first word of a title or a button is capitalized.
 - A website the dashboard or a page shows, like a link in a report, a domain or a social profile, has its favicon next to it: `ImageFavicon` (`lib/favicon.js`), or a globe when there's no website to ask.
 - A person the dashboard shows by their email address, like a contact or the signed-in member, has their picture next to it, never a plain initial: `AvatarContact`, which shows their Gravatar photo or their email domain's logo, with their initial only as the fallback. Its hash comes from `gravatarHash` (`lib/gravatar.js`), on the server. A photo they uploaded comes first (`AvatarUser`), and a newsletter sending an email shows its own picture (`AvatarNewsletter`).

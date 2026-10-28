@@ -92,7 +92,7 @@ const accountSchema = new mongoose.Schema(
 			checklistDismissedAt: { type: Date },
 			checklistFinishedAt: { type: Date },
 		},
-		// The changelog entries, by id, its owner closed the dashboard's what's new card on: MailCheap Cloud's WhatsNew
+		// The changelog entries, by id, its owner closed the dashboard's what's new card on: Sendz Cloud's WhatsNew
 		// site extension (components/SiteExtensions.jsx) only lists the others.
 		changelog: {
 			seen: { type: [String], default: undefined },
