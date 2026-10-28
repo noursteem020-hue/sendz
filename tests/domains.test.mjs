@@ -186,7 +186,7 @@ describe("from addresses", () => {
 				["shared-news", "CNAME", `tok3._domainkey.${subdomain}`, "tok3.dkim.amazonses.com"],
 				["shared-news", "MX", `bounce.${subdomain}`, "10 feedback-smtp.us-east-1.amazonses.com"],
 				["shared-news", "TXT", `bounce.${subdomain}`, "v=spf1 include:amazonses.com ~all"],
-				["shared-news", "CNAME", subdomain, "cname.mailcheap.ai"],
+				["shared-news", "CNAME", subdomain, "cname.sendz.ai"],
 			]
 		);
 		assert.deepEqual([newsletter.sharedSender.domain, newsletter.sharedSender.provider], [subdomain, "ses"]);
@@ -223,7 +223,7 @@ describe("from addresses", () => {
 	});
 
 	test("before the provider's keys are in, the shared address waits without an alert; once they are, a failure alerts the admins", async () => {
-		const alerts = () => platformEmails.filter(({ subject }) => subject === "[MailCheap] Shared address not set up").length;
+		const alerts = () => platformEmails.filter(({ subject }) => subject === "[Sendz] Shared address not set up").length;
 		const before = { alerts: alerts(), calls: calls.length };
 		const user = await withEnv({ SES_ACCESS_KEY_ID: "", SES_SECRET_ACCESS_KEY: "" }, () => customer("no-provider@example.com", "no-provider"));
 		const waiting = await m.Newsletter.findOne({ accountId: user.accountId }).lean();
@@ -287,9 +287,9 @@ describe("own domains", () => {
 		assert.match((await as(user, () => m.campaigns.sendTestCampaign(id))).error, /owner-mail.com isn't verified yet/);
 
 		state.identities.get("owner-mail.com").verified = true;
-		cnames.set("news.owner-mail.com", ["cname.mailcheap.ai"]);
+		cnames.set("news.owner-mail.com", ["cname.sendz.ai"]);
 		assert.deepEqual(await as(user, () => m.domains.checkDomainAction(String(domain._id))), { ok: true, verified: true });
-		assert.equal((await m.Newsletter.findOne({ accountId: user.accountId }).lean()).archiveHost, undefined, "a CNAME to MailCheap moves nothing");
+		assert.equal((await m.Newsletter.findOne({ accountId: user.accountId }).lean()).archiveHost, undefined, "a CNAME to Sendz moves nothing");
 
 		assert.deepEqual(await as(user, () => m.campaigns.sendTestCampaign(id)), { ok: true });
 		const email = sent.at(-1);
@@ -429,7 +429,7 @@ describe("own domains", () => {
 		const second = await customer("second-owner@example.com", "second-owner");
 		await addVerifiedDomain(first, "taken.com");
 		const result = await as(second, () => m.domains.addDomainAction(null, form({ domain: "taken.com" })));
-		assert.deepEqual(result, { error: "taken.com is used by another MailCheap account" });
+		assert.deepEqual(result, { error: "taken.com is used by another Sendz account" });
 		assert.match((await saveFrom(second, "second-owner", "hi@taken.com")).error, /Add taken.com on the Domains page first/);
 		assert.equal(await m.Domain.countDocuments({ accountId: second.accountId }), 0);
 		assert.deepEqual(await as(first, () => m.domains.addDomainAction(null, form({ domain: "taken.com" }))), { error: "taken.com is already added" });
@@ -460,7 +460,7 @@ describe("own domains", () => {
 	});
 });
 
-// An SES domain's records as DNS answers MailCheap's own lookups: in place, behind Cloudflare's proxy (its addresses where
+// An SES domain's records as DNS answers Sendz's own lookups: in place, behind Cloudflare's proxy (its addresses where
 // the DKIM CNAMEs should be), or gone.
 function answerDns(domain, how) {
 	for (const token of ["tok1", "tok2", "tok3"]) {
@@ -476,10 +476,10 @@ function answerDns(domain, how) {
 }
 
 function stoppedAlerts(domain) {
-	return platformEmails.filter(({ subject }) => subject === `[MailCheap] Sending from ${domain} stopped`);
+	return platformEmails.filter(({ subject }) => subject === `[Sendz] Sending from ${domain} stopped`);
 }
 
-describe("DNS records MailCheap looks at itself", () => {
+describe("DNS records Sendz looks at itself", () => {
 	test("records behind Cloudflare's proxy stop a verified domain: a test says why, the page and the API show it, its owner hears once, and it sends again once fixed", async () => {
 		const user = await customer("proxied@example.com", "proxied-news");
 		const domain = await addVerifiedDomain(user, "proxied-mail.com");

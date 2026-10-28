@@ -6,8 +6,8 @@ import { getPresendChecks } from "../lib/presend-checks.js";
 import { getOwnDomainNudge, isOwnDomainNudgeShown } from "../lib/sender-rules.js";
 import { toSafeNextPath } from "../lib/validation.js";
 
-const sharedDomain = "mailcheap.ai";
-const shared = "hello@field-notes.mailcheap.ai";
+const sharedDomain = "sendz.ai";
+const shared = "hello@field-notes.sendz.ai";
 const pending = { _id: "65f1c0ffee00000000000001", domain: "pending.dev", verified: false };
 const verified = { _id: "65f1c0ffee00000000000002", domain: "fieldnotes.com", verified: true };
 

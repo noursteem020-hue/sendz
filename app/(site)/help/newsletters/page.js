@@ -41,7 +41,7 @@ export default function NewslettersPage() {
 						? ` Your shared address (hello@slug.${sharedDomain}) and your website (slug.${sharedDomain}) follow it, so changing it moves them.`
 						: " Your website's address follows it."}
 					{hasOwnHost && " A website on your own domain stays there."}{" "}
-					A few names like www, api or mail are kept by MailCheap. An account changes slugs {SLUG_CHANGES.limit} times{" "}
+					A few names like www, api or mail are kept by Sendz. An account changes slugs {SLUG_CHANGES.limit} times{" "}
 					{formatWindow(SLUG_CHANGES.window)} at most.
 				</li>
 				<li>
@@ -64,7 +64,7 @@ export default function NewslettersPage() {
 				<li>
 					<strong>Postal address</strong>: printed in the footer of every email, as anti-spam laws ask.{" "}
 					{isCloud()
-						? "Until you set yours, emails print MailCheap's business address. Saved empty, emails wait until you add one."
+						? "Until you set yours, emails print Sendz's business address. Saved empty, emails wait until you add one."
 						: "Saved empty, emails wait until you add one."}
 				</li>
 			</ul>
@@ -160,7 +160,7 @@ export default function NewslettersPage() {
 				<>
 					<h2 id="notifications" data-cloud>Notifications</h2>
 					<p>
-						What MailCheap emails you about the newsletter, set on its <LinkApp href="/newsletters/notifications">Notifications page</LinkApp>.
+						What Sendz emails you about the newsletter, set on its <LinkApp href="/newsletters/notifications">Notifications page</LinkApp>.
 						With a paid plan, that&apos;s a summary of its numbers every Monday at {SUMMARY_HOUR} AM, your time: who joined and who left
 						against the week before, your total, new subscribers over the last {SUMMARY_BARS.weekly} weeks, and your latest
 						issue&apos;s opens and clicks against your average, with its most clicked link.
@@ -176,12 +176,12 @@ export default function NewslettersPage() {
 						LinkedIn. <Link href="/docs/api#get-summary">Get a summary</Link> in the API returns the same numbers.
 					</p>
 
-					<h2 id="inbox-check" data-cloud>Getting MailCheap&apos;s emails in your inbox</h2>
+					<h2 id="inbox-check" data-cloud>Getting Sendz&apos;s emails in your inbox</h2>
 					<p>
-						MailCheap only emails you about your account, like a campaign that needs you or your summary, never for marketing. To
+						Sendz only emails you about your account, like a campaign that needs you or your summary, never for marketing. To
 						keep those out of spam, once you have a plan and your newsletter&apos;s get-started list is closed or done, a card at the
-						bottom right of the <LinkApp href="/">dashboard</LinkApp> sends you an email from MailCheap: reply to it with anything,
-						and your mail app files MailCheap&apos;s next emails in your inbox. If it lands in spam, mark it as not spam too.
+						bottom right of the <LinkApp href="/">dashboard</LinkApp> sends you an email from Sendz: reply to it with anything,
+						and your mail app files Sendz&apos;s next emails in your inbox. If it lands in spam, mark it as not spam too.
 					</p>
 					<p>
 						It goes to your account&apos;s address, {INBOX_CHECK_LIMIT.limit} times a day at most. Closing the card, or Done once

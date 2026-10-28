@@ -8,9 +8,9 @@ import { activate, anonymous, as, catchRedirect, form, listPlanPrices, mockStrip
 // The public side of the app on every server: where / sends signed-out visitors, which paths open without a session,
 // the plan buttons' way through sign-in to Checkout, the header's plane, and what the pages, the sitemap, robots.txt
 // and the web manifest tell search engines and browsers.
-// MailCheap Cloud's marketing site adds to it through the site extensions (tests/marketing/site.test.mjs).
+// Sendz Cloud's marketing site adds to it through the site extensions (tests/marketing/site.test.mjs).
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
-const SITE_URL = "https://mailcheap.ai";
+const SITE_URL = "https://sendz.ai";
 const CHECKOUT = "/billing/checkout?plan=growth&interval=year";
 // The companies that send the emails.
 const PROVIDERS = /Amazon|\bAWS\b|\bSES\b|PostShiba|Resend/;
@@ -389,7 +389,7 @@ describe("search engines", () => {
 		for (const path of paths) {
 			const { file, metadata } = await readPage(path);
 			const title = await resolveTitle(file, metadata.title);
-			assert.match(title, /MailCheap/, `${path}: ${title}`);
+			assert.match(title, /Sendz/, `${path}: ${title}`);
 			assert.ok(metadata.description?.length >= 50 && metadata.description.length <= 200, `${path}: ${metadata.description}`);
 			assert.equal(metadata.alternates?.canonical, path, path);
 			// A page's openGraph would replace its layouts' whole: the share image and the page's address with it.
@@ -406,7 +406,7 @@ describe("search engines", () => {
 		const { metadata } = await importFile("app/(site)/layout.js");
 		assert.equal(metadata.metadataBase.href, new URL("/", m.config.getAppUrl()).href);
 		assert.deepEqual(metadata.robots, { index: true, follow: true });
-		assert.deepEqual(metadata.openGraph, { type: "website", siteName: "MailCheap", locale: "en_US", url: "./" });
+		assert.deepEqual(metadata.openGraph, { type: "website", siteName: "Sendz", locale: "en_US", url: "./" });
 		assert.equal(metadata.twitter.card, "summary_large_image");
 		assert.deepEqual((await importFile("app/layout.js")).metadata.robots, { index: false, follow: false }, "the app's own pages stay out of search");
 	});
@@ -432,7 +432,7 @@ describe("search engines", () => {
 		const response = (await importFile("app/site.webmanifest/route.js")).GET();
 		assert.equal(response.headers.get("content-type"), "application/manifest+json");
 		const manifest = await response.json();
-		assert.equal(manifest.name, "MailCheap");
+		assert.equal(manifest.name, "Sendz");
 		assert.equal(manifest.start_url, "/");
 		assert.deepEqual(manifest.icons.map(({ sizes }) => sizes), ["192x192", "512x512"]);
 		for (const { src, sizes, type } of manifest.icons) {

@@ -18,8 +18,8 @@ import {
 const SIGNED = "client_id=https%3A%2F%2Fapp.example.test%2Fclient.json&scope=mailcheap%3Afull&exp=1&ba_iat=1&ba_param=ba_iat&ba_param=ba_param&ba_param=client_id&ba_param=exp&ba_param=scope&sig=abc";
 
 test("tokens are for /mcp, from an issuer that is the site itself, with refresh tokens and OpenID scopes on offer", () => {
-	assert.equal(getMcpResource("https://mailcheap.ai"), "https://mailcheap.ai/mcp");
-	assert.equal(getOAuthIssuer("https://mailcheap.ai"), "https://mailcheap.ai");
+	assert.equal(getMcpResource("https://sendz.ai"), "https://sendz.ai/mcp");
+	assert.equal(getOAuthIssuer("https://sendz.ai"), "https://sendz.ai");
 	assert.ok(OAUTH_SCOPES.includes(MCP_SCOPE));
 	assert.ok(OAUTH_SCOPES.includes("offline_access"));
 	assert.deepEqual(OAUTH_SCOPES.slice(0, 3), ["openid", "profile", "email"]);

@@ -32,13 +32,13 @@ test("the server doesn't start with a short secret or hash key", () =>
 	withEnv(STRONG, () => {
 		assert.doesNotThrow(register);
 		process.env.SUPPRESSION_HASH_KEY = "short";
-		assert.throws(register, /MailCheap can't start\. SUPPRESSION_HASH_KEY must be at least 32 characters/);
+		assert.throws(register, /Sendz can't start\. SUPPRESSION_HASH_KEY must be at least 32 characters/);
 		process.env.SUPPRESSION_HASH_KEY = STRONG.SUPPRESSION_HASH_KEY;
 		process.env.BETTER_AUTH_SECRET = "short";
-		assert.throws(register, /MailCheap can't start\. BETTER_AUTH_SECRET must be at least 32 characters/);
+		assert.throws(register, /Sendz can't start\. BETTER_AUTH_SECRET must be at least 32 characters/);
 	}));
 
-test("MailCheap Cloud needs both Stripe keys and RESEND_API_KEY; a self-hosted server needs none of them", () => {
+test("Sendz Cloud needs both Stripe keys and RESEND_API_KEY; a self-hosted server needs none of them", () => {
 	assert.deepEqual(getConfigProblems(CLOUD), []);
 	for (const name of ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "RESEND_API_KEY"]) {
 		const problems = getConfigProblems({ ...CLOUD, [name]: " " });
@@ -63,7 +63,7 @@ test("the cloud refuses to start without Stripe or Resend, and its health check 
 		assert.equal(healthy.headers.get("cache-control"), "no-store");
 
 		delete process.env.STRIPE_SECRET_KEY;
-		assert.throws(register, /MailCheap can't start\. MAILCHEAP_CLOUD is true, so STRIPE_SECRET_KEY has to be set/);
+		assert.throws(register, /Sendz can't start\. MAILCHEAP_CLOUD is true, so STRIPE_SECRET_KEY has to be set/);
 		const failing = await GET();
 		assert.equal(failing.status, 503);
 		const body = await failing.json();
@@ -82,7 +82,7 @@ test("a self-hosted server signs in ALLOWED_EMAILS, its @domains and ADMIN_EMAIL
 		assert.equal(isEmailAllowed(email, env), false, String(email));
 	}
 	assert.equal(isEmailAllowed("jane@example.com", {}), false, "never open by default");
-	assert.equal(isEmailAllowed("anyone@anywhere.dev", { MAILCHEAP_CLOUD: "true" }), true, "MailCheap Cloud takes anyone");
+	assert.equal(isEmailAllowed("anyone@anywhere.dev", { MAILCHEAP_CLOUD: "true" }), true, "Sendz Cloud takes anyone");
 });
 
 test("ADMIN_EMAILS is a comma-separated list, trimmed and lowercased", () => {
@@ -100,9 +100,9 @@ test("ADMIN_EMAILS is a comma-separated list, trimmed and lowercased", () => {
 
 test("URGENT_REPLY_TO is where replies to an owner's urgent emails go, and anything that isn't one address leaves the usual one", () => {
 	assert.equal(getUrgentReplyTo({ MAILCHEAP_CLOUD: "true", URGENT_REPLY_TO: " owner-help@example.com " }), "owner-help@example.com");
-	assert.equal(getUrgentReplyTo({ MAILCHEAP_CLOUD: "true" }), "hello@mailcheap.ai", "support's, without one");
+	assert.equal(getUrgentReplyTo({ MAILCHEAP_CLOUD: "true" }), "hello@sendz.ai", "support's, without one");
 	for (const value of ["owner-help", "Owner <owner-help@example.com>", "a@example.com, b@example.com", "owner help@example.com"]) {
-		assert.equal(getUrgentReplyTo({ MAILCHEAP_CLOUD: "true", URGENT_REPLY_TO: value }), "hello@mailcheap.ai", value);
+		assert.equal(getUrgentReplyTo({ MAILCHEAP_CLOUD: "true", URGENT_REPLY_TO: value }), "hello@sendz.ai", value);
 	}
 	assert.equal(getUrgentReplyTo({ URGENT_REPLY_TO: "owner-help@example.com" }), "owner-help@example.com", "a self-hosted server too");
 	assert.equal(getUrgentReplyTo({}), null, "else EMAIL_FROM gets the replies there");

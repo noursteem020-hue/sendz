@@ -96,7 +96,7 @@ export function answerTelegram(answer) {
 	telegramAnswer = answer;
 }
 
-// MailCheap Cloud by default; a self-hosted server with { MAILCHEAP_CLOUD: "" }.
+// Sendz Cloud by default; a self-hosted server with { MAILCHEAP_CLOUD: "" }.
 export async function startTestApp(env = {}) {
 	const mongo = await startMongo();
 	Object.assign(process.env, {
@@ -115,7 +115,7 @@ export async function startTestApp(env = {}) {
 		ADMIN_EMAILS: "admin@example.com",
 		BLOB_READ_WRITE_TOKEN: "blob-test",
 		SHARED_DOMAIN: "mailcheapmail.com",
-		ARCHIVE_CNAME_TARGET: "cname.mailcheap.ai",
+		ARCHIVE_CNAME_TARGET: "cname.sendz.ai",
 		SES_AWS_ACCOUNT_ID: "111122223333",
 		SES_ACCESS_KEY_ID: "test-ses-key-id",
 		SES_SECRET_ACCESS_KEY: "test-ses-secret",
@@ -270,7 +270,7 @@ export async function pointWebsiteDomain(user, host) {
 	const { cnames, txts } = await import("../stubs/dns-check.mjs");
 	const { getOwnershipRecord } = await import("../../lib/website-domain-rules.js");
 	const ownership = getOwnershipRecord(user.accountId, host);
-	cnames.set(host, ["cname.mailcheap.ai"]);
+	cnames.set(host, ["cname.sendz.ai"]);
 	txts.set(ownership.name, [[ownership.value]]);
 	return ownership;
 }

@@ -53,7 +53,7 @@ export default function ListCleanupPage() {
 
 			<h2 id="domains">{showSpamList ? "Spam domains and domains without mail" : "Domains that can\u2019t receive email"}</h2>
 			<p>
-				Apart from the cleanup, MailCheap checks in the background that the domains of your contacts can receive email, each domain
+				Apart from the cleanup, Sendz checks in the background that the domains of your contacts can receive email, each domain
 				about once a month, for every newsletter, with nothing to turn on. A domain that no longer exists, or that has no mail
 				server, would make every email bounce. Once two checks a day apart agree, its contacts stop getting issues and show as
 				bounced, marked &ldquo;No mail server&rdquo;. Nothing was sent, so they don&apos;t count against your bounce rate. The domain
@@ -81,7 +81,7 @@ export default function ListCleanupPage() {
 			<p>
 				List cleanup is on for new newsletters. In the <LinkApp href="/newsletters/cleanup">List cleanup section</LinkApp> of the{" "}
 				<Link href={getHelpHref("newsletters", "list-cleanup")}>newsletter&apos;s settings</Link>, turn it off, or change when a contact
-				counts as cold: {CLEANUP_LIMITS.minIssues} to {CLEANUP_LIMITS.maxIssues} ignored issues, counting from the first issue MailCheap
+				counts as cold: {CLEANUP_LIMITS.minIssues} to {CLEANUP_LIMITS.maxIssues} ignored issues, counting from the first issue Sendz
 				sent them, and {CLEANUP_LIMITS.minDays} to {CLEANUP_LIMITS.maxDays} quiet days. A weekly newsletter can go lower on days.
 			</p>
 		</ArticleHelp>

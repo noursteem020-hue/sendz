@@ -257,7 +257,7 @@ const VIEWS = [
 	{ id: "website", label: "Website", icon: Monitor },
 	{ id: "email", label: "Email", icon: Mail },
 ];
-// MailCheap's own colors follow the dashboard's light or dark mode, like its preview.
+// Sendz's own colors follow the dashboard's light or dark mode, like its preview.
 const ADAPTIVE_COLORS = { background: "var(--background)", text: "var(--foreground)", accent: "var(--primary)" };
 // Without reduced motion, the outer dots move out past their overlap.
 const PALETTE = [

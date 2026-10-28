@@ -80,35 +80,35 @@ test("saving a newsletter takes the shared address or a domain the account added
 	assert.match(getFromEmailSaveProblem({ fromEmail: "hi@stranger.com", slug: "x", domains: [], sharedDomain: null }), /Domains page first$/);
 });
 
-test("customers can't claim MailCheap's domains", () => {
-	const options = { sharedDomain: SHARED, appHost: "mailcheap.ai" };
+test("customers can't claim Sendz's domains", () => {
+	const options = { sharedDomain: SHARED, appHost: "sendz.ai" };
 	assert.equal(getDomainProblem("example.com", options), null);
 	assert.equal(getDomainProblem("news.example.co.uk", options), null);
-	for (const domain of ["mailcheapmail.com", "x.mailcheapmail.com", "mailcheap.ai", "app.mailcheap.ai", "amazonses.com", "postshiba.com", "foo.vercel.app"]) {
+	for (const domain of ["mailcheapmail.com", "x.mailcheapmail.com", "sendz.ai", "app.sendz.ai", "amazonses.com", "postshiba.com", "foo.vercel.app"]) {
 		assert.match(getDomainProblem(domain, options), /can't be added/, domain);
 	}
 	for (const domain of ["example", "-bad.com", "a..b.com", "exa mple.com"]) assert.match(getDomainProblem(domain, options), /Enter a domain/, domain);
 });
 
-test("with the app's own domain shared, <slug>.mailcheap.ai is the shared address and the rest of mailcheap.ai stays MailCheap's", () => {
-	const sharedDomain = "mailcheap.ai";
-	const options = { sharedDomain, appHost: "mailcheap.ai" };
-	for (const domain of ["mailcheap.ai", "r.mailcheap.ai", "weekly.mailcheap.ai", "news.weekly.mailcheap.ai"]) {
+test("with the app's own domain shared, <slug>.sendz.ai is the shared address and the rest of sendz.ai stays Sendz's", () => {
+	const sharedDomain = "sendz.ai";
+	const options = { sharedDomain, appHost: "sendz.ai" };
+	for (const domain of ["sendz.ai", "r.sendz.ai", "weekly.sendz.ai", "news.weekly.sendz.ai"]) {
 		assert.match(getDomainProblem(domain, options), /can't be added/, domain);
 	}
 	assert.equal(getDomainProblem("example.com", options), null);
 
 	const save = (fromEmail) => getFromEmailSaveProblem({ fromEmail, slug: "weekly", domains: [], sharedDomain });
-	assert.equal(save("hello@weekly.mailcheap.ai"), null);
-	for (const fromEmail of ["hello@mailcheap.ai", "hello@r.mailcheap.ai", "hello@www.mailcheap.ai", "hello@other.mailcheap.ai"]) {
-		assert.match(save(fromEmail), /^Use hello@weekly.mailcheap.ai, the shared address/, fromEmail);
+	assert.equal(save("hello@weekly.sendz.ai"), null);
+	for (const fromEmail of ["hello@sendz.ai", "hello@r.sendz.ai", "hello@www.sendz.ai", "hello@other.sendz.ai"]) {
+		assert.match(save(fromEmail), /^Use hello@weekly.sendz.ai, the shared address/, fromEmail);
 	}
 
-	const ready = { domain: "weekly.mailcheap.ai", provider: "postshiba", verified: true };
+	const ready = { domain: "weekly.sendz.ai", provider: "postshiba", verified: true };
 	const from = (fromEmail) => resolveFrom({ newsletter: { slug: "weekly", fromEmail, sharedSender: ready }, ownerEmail: "jane@example.com", sharedDomain, providerId: "postshiba" });
-	assert.deepEqual(from("hello@weekly.mailcheap.ai"), { identity: "weekly.mailcheap.ai", replyTo: "jane@example.com", isShared: true });
-	assert.match(from("hello@r.mailcheap.ai").problem, /The shared address for this newsletter is hello@weekly.mailcheap.ai/, "never MailCheap's own sender");
-	assert.equal(getOwnDomainLocalPart("hello@weekly.mailcheap.ai", sharedDomain), "hi");
+	assert.deepEqual(from("hello@weekly.sendz.ai"), { identity: "weekly.sendz.ai", replyTo: "jane@example.com", isShared: true });
+	assert.match(from("hello@r.sendz.ai").problem, /The shared address for this newsletter is hello@weekly.sendz.ai/, "never Sendz's own sender");
+	assert.equal(getOwnDomainLocalPart("hello@weekly.sendz.ai", sharedDomain), "hi");
 });
 
 test("pasted domains lose their scheme, path and trailing dot", () => {

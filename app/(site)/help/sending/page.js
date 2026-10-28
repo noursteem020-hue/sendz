@@ -24,7 +24,7 @@ export default function SendingPage() {
 			<p>Before a campaign can go out, the review step checks it:</p>
 			<ul>
 				<li>a subject, and content, with each button&apos;s text and link;</li>
-				<li>the unsubscribe link, which MailCheap adds to every issue written in the editor;</li>
+				<li>the unsubscribe link, which Sendz adds to every issue written in the editor;</li>
 				<li>a size under 100 KB, since Gmail cuts off longer emails;</li>
 				<li>
 					a postal address, set in the <LinkApp href="/newsletters/sender">newsletter&apos;s settings</LinkApp>;
@@ -40,7 +40,7 @@ export default function SendingPage() {
 			</p>
 			<ul>
 				<li>
-					a <Link href={getHelpHref("writing", "first-name")}>merge tag</Link> MailCheap doesn&apos;t fill in, like one from another
+					a <Link href={getHelpHref("writing", "first-name")}>merge tag</Link> Sendz doesn&apos;t fill in, like one from another
 					platform, which goes out as written;
 				</li>
 				<li>
@@ -73,7 +73,7 @@ export default function SendingPage() {
 					<p>
 						Some habits tend to send email to spam: a subject in capital letters, a row of exclamation marks, phrases like
 						&ldquo;100% free&rdquo; or &ldquo;act now&rdquo;, a subject starting with Re: when it isn&apos;t a reply, or a link
-						shortener like bit.ly. When you send or schedule an issue that has one, MailCheap shows you the tips first: the words
+						shortener like bit.ly. When you send or schedule an issue that has one, Sendz shows you the tips first: the words
 						they&apos;re about, highlighted, what to change, and a button to edit them. Change them, or send or schedule it as it
 						is. Most issues get none and go straight out. A web-only issue goes to no inbox, so it gets none either.
 					</p>
@@ -170,7 +170,7 @@ export default function SendingPage() {
 				sent stays sent. Resume sends the rest, after checking your account again.
 			</p>
 			<p>
-				MailCheap pauses a send by itself when too many of its emails bounce or get marked as spam.{" "}
+				Sendz pauses a send by itself when too many of its emails bounce or get marked as spam.{" "}
 				<Link href={getHelpHref("deliverability", "pauses")}>Bounces, complaints and pauses</Link>
 			</p>
 
@@ -183,7 +183,7 @@ export default function SendingPage() {
 						Almost every issue goes straight out.
 					</p>
 					<p>
-						When an issue looks clearly harmful, its send waits and its page says In review: a person at MailCheap looks at it,
+						When an issue looks clearly harmful, its send waits and its page says In review: a person at Sendz looks at it,
 						usually within a few hours, then sends it as you wrote it or tells you why it can&apos;t go out.{" "}
 						<Link href="/acceptable-use">Acceptable use policy</Link>
 					</p>
@@ -195,7 +195,7 @@ export default function SendingPage() {
 					<p>
 						The check also reads your own welcome and confirmation emails when you save them. If one looks clearly harmful, the{" "}
 						<LinkApp href="/newsletters/welcome">Welcome email</LinkApp> or <LinkApp href="/newsletters/signups">Confirm signups</LinkApp>{" "}
-						page says In review until a person at MailCheap looks at it. Meanwhile, new subscribers get the built-in confirmation
+						page says In review until a person at Sendz looks at it. Meanwhile, new subscribers get the built-in confirmation
 						email, or no welcome email. If it can&apos;t go out, you get an email saying why, and changing it has it checked again.
 					</p>
 				</>

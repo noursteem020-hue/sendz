@@ -4,9 +4,9 @@ import { createElement } from "react";
 import { prerenderToNodeStream } from "react-dom/static";
 import { activate, as, callApi, catchRedirect, form, listPlanPrices, mockStripe, readLookupKeys, signIn, startTestApp } from "./helpers/app.mjs";
 
-// Which plans MailCheap offers comes from Stripe: a plan shows on the pricing pages, the paywall and billing, and can be
+// Which plans Sendz offers comes from Stripe: a plan shows on the pricing pages, the paywall and billing, and can be
 // picked, only once Stripe has both of its prices at lib/plans.js's amounts. This Stripe starts with the five plans
-// MailCheap had before Ultra, then Ultra's prices arrive. The tests run in order: lib/stripe.js keeps what it read.
+// Sendz had before Ultra, then Ultra's prices arrive. The tests run in order: lib/stripe.js keeps what it read.
 let app;
 let m;
 let calls;

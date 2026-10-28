@@ -18,7 +18,7 @@ let admin;
 let nextId = 0;
 let visitor = 0;
 
-const isWelcomeNotice = ({ subject }) => subject.startsWith("[MailCheap] Welcome emails paused");
+const isWelcomeNotice = ({ subject }) => subject.startsWith("[Sendz] Welcome emails paused");
 
 async function callTool(key, name, args = {}) {
 	const request = new Request("http://localhost:3000/mcp", {
@@ -171,7 +171,7 @@ describe("signup limits by plan", () => {
 		await sentEarlier(100, 0);
 		const emailsBefore = platformEmails.length;
 		assert.equal(await signUp("REST API", user, "past-starter@example.org"), null, "Starter's 100 went out");
-		const alert = platformEmails.slice(emailsBefore).find(({ subject }) => subject === "[MailCheap] Signup emails capped");
+		const alert = platformEmails.slice(emailsBefore).find(({ subject }) => subject === "[Sendz] Signup emails capped");
 		assert.ok(alert.text.includes("Over 100 welcome and confirmation emails for welcome-cap news in 10 minutes. New signups get none until it slows down. Bigger plans send more."));
 
 		await m.Account.updateOne({ _id: user.accountId }, { $set: { plan: "growth" } });
@@ -272,7 +272,7 @@ describe("the owner", () => {
 		const [notice] = notices;
 		const current = await usage(user);
 		assert.deepEqual(notice.to, ["notice@example.com"]);
-		assert.equal(notice.subject, "[MailCheap] Welcome emails paused: you've used this month's 2 emails");
+		assert.equal(notice.subject, "[Sendz] Welcome emails paused: you've used this month's 2 emails");
 		const { supportChatPath } = m.siteExtensions;
 		assert.equal(
 			notice.text,

@@ -66,7 +66,7 @@ export function createFakeGoogle() {
 		return state.domains.get(name);
 	}
 
-	// What Google's consent screen gives back for the URL MailCheap sent the admin to: a code bound to its PKCE challenge.
+	// What Google's consent screen gives back for the URL Sendz sent the admin to: a code bound to its PKCE challenge.
 	function approve(authorizationUrl, { email = "postmaster-owner@example.com", scopes = ["openid", "email", SCOPE] } = {}) {
 		const params = new URL(authorizationUrl).searchParams;
 		const code = `code-${crypto.randomBytes(8).toString("hex")}`;

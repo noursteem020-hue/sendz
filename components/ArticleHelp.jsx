@@ -7,7 +7,7 @@ import { HELP_PATH, getHelpArticle, getHelpArticles, getHelpHref } from "@/lib/h
 import { siteExtensions } from "@/lib/site-extensions";
 import { cn } from "@/lib/utils";
 
-// An article of the help center (lib/help.js): its group, title and summary, on MailCheap Cloud the picture of its feature,
+// An article of the help center (lib/help.js): its group, title and summary, on Sendz Cloud the picture of its feature,
 // its sections, then the articles around it. One this server doesn't have (cloud only) answers 404. Sections are h2s
 // with an id, for links to them.
 export default function ArticleHelp({ slug, children }) {

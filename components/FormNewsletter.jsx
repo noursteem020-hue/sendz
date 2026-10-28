@@ -46,7 +46,7 @@ const IMAGE_PREVIEW_PATTERN = /^(https:\/\/\S+\.\S{2,}\/\S+|\/\S+\.\w{3,4})$/;
 // switches back to how the page opened and dropped what an error refused. Discard goes back to what the newsletter has
 // saved. welcomePause: the notice to show while the month's emails are used up and welcome emails are skipped.
 // signupReviews: whether the content check holds the saved welcome or confirmation email (lib/signup-email-review.js),
-// never why. isCloud: MailCheap Cloud, whose plans count the confirmation and welcome emails among their monthly emails.
+// never why. isCloud: Sendz Cloud, whose plans count the confirmation and welcome emails among their monthly emails.
 // defaultPostalAddress: what its emails print until it has its own (lib/postal-address.js); the editor's checks link
 // to the field with #postal-address. hasArchiveHost: the server hosts websites on customers' own subdomains, and
 // websiteDomain is the newsletter's (lib/website-domain-rules.js). hasSentIssue: an issue went out, so the website can
@@ -295,7 +295,7 @@ function SectionSender({ draft, set, update, domains, sharedDomain, fromEmail, d
 				htmlFor={POSTAL_ADDRESS_ID}
 				hint={
 					defaultPostalAddress && postalAddress === defaultPostalAddress ? (
-						"MailCheap's address is used by default. Replace it with yours anytime."
+						"Sendz's address is used by default. Replace it with yours anytime."
 					) : postalAddress.trim() ? (
 						"Shown in the footer of every email. Anti-spam laws require one."
 					) : (
@@ -309,7 +309,7 @@ function SectionSender({ draft, set, update, domains, sharedDomain, fromEmail, d
 										onClick={() => set("postalAddress", defaultPostalAddress)}
 										className="font-medium text-foreground underline decoration-foreground/30 underline-offset-2 transition-colors duration-150 hover:decoration-foreground"
 									>
-										Use MailCheap&apos;s address
+										Use Sendz&apos;s address
 									</button>
 								</>
 							)}
@@ -555,7 +555,7 @@ function SectionCleanup({ draft, setDraft, set, newsletter, sender, fromEmail, t
 					doesn&apos;t answer by a send {LAST_CHANCE_DAYS} days later becomes dormant: not unsubscribed, not deleted, and
 					back if they sign up again.
 				</p>
-				<Field label="Ignored issues" hint="In a row, counting from the first issue MailCheap sent">
+				<Field label="Ignored issues" hint="In a row, counting from the first issue Sendz sent">
 					<Input
 						name="cleanupIssues"
 						type="number"
@@ -604,7 +604,7 @@ function SectionStoppedDomains({ totals }) {
 	return (
 		<Section title="Stopped for their domain" stagger={2}>
 			<p className="px-4 py-3 text-sm text-pretty text-muted-foreground">
-				MailCheap checks your contacts&apos; domains in the background.
+				Sendz checks your contacts&apos; domains in the background.
 				{totals.isSpamListOn && " Contacts on a known spam domain stop getting issues at once."} Contacts on one that
 				can&apos;t receive email stop after two checks a day apart, and get issues again once it can.{" "}
 				<LinkHelp article="list-cleanup" section="domains" />
@@ -771,7 +771,7 @@ function NoticeReview({ review, instead }) {
 		<NoticeSection>
 			<span>
 				{review.status === "in_review"
-					? `In review: a person at MailCheap checks this email before it goes out, usually within a few hours. Until then, ${instead}.`
+					? `In review: a person at Sendz checks this email before it goes out, usually within a few hours. Until then, ${instead}.`
 					: `This email can't be sent${review.note ? `: ${review.note}` : ""}. Until you change it, ${instead}.`}{" "}
 				<LinkHelp article="sending" section="content-check" />
 			</span>

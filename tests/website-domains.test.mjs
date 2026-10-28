@@ -19,8 +19,8 @@ import { challengedHosts, failNextAttach, projectHosts, setHelperSetUp } from ".
 import { cnames, txts } from "./stubs/dns-check.mjs";
 import { sent } from "./stubs/ses.mjs";
 
-// A newsletter's website on a subdomain of the customer's: its CNAME points it at MailCheap, a TXT record only that
-// account can know proves it's theirs, and on MailCheap Cloud the DNS helper puts it on the app's Vercel project.
+// A newsletter's website on a subdomain of the customer's: its CNAME points it at Sendz, a TXT record only that
+// account can know proves it's theirs, and on Sendz Cloud the DNS helper puts it on the app's Vercel project.
 const SHARED_DOMAIN = "mailcheapmail.com";
 let app;
 let m;
@@ -91,12 +91,12 @@ before(async () => {
 after(() => app?.stop());
 
 describe("rules", () => {
-	test("a website goes on a subdomain of the customer's, never on MailCheap's or a domain's own name", () => {
-		const options = { sharedDomain: SHARED_DOMAIN, appHost: "mailcheap.ai" };
+	test("a website goes on a subdomain of the customer's, never on Sendz's or a domain's own name", () => {
+		const options = { sharedDomain: SHARED_DOMAIN, appHost: "sendz.ai" };
 		for (const host of ["news.example.com", "www.example.com", "read.news.example.co.uk"]) assert.equal(getWebsiteHostProblem(host, options), null, host);
 		assert.equal(getWebsiteHostProblem("example.com", options), "Use a subdomain, like news.example.com");
 		assert.equal(getWebsiteHostProblem("example.co.uk", options), "Use a subdomain, like news.example.co.uk");
-		for (const host of ["weekly.mailcheapmail.com", "news.mailcheap.ai", "x.vercel.app", "news.postshiba.com"]) {
+		for (const host of ["weekly.mailcheapmail.com", "news.sendz.ai", "x.vercel.app", "news.postshiba.com"]) {
 			assert.equal(getWebsiteHostProblem(host, options), "This domain can't be used", host);
 		}
 		for (const host of ["", "news", "news..example.com", "news.example.com:8443", "203.0.113.7"]) {
@@ -116,7 +116,7 @@ describe("rules", () => {
 
 	test("a domain being set up lists its CNAME and TXT records, and Vercel's when it asks; a live one keeps its CNAME", () => {
 		const accountId = "6650f1c2e9b1d4a012345678";
-		const cnameTarget = "cname.mailcheap.ai";
+		const cnameTarget = "cname.sendz.ai";
 		const pending = getWebsiteDomainSetup({ slug: "notes", websiteDomain: { host: "news.example.co.uk", cnameFound: true } }, { accountId, cnameTarget });
 		assert.deepEqual([pending.isLive, pending.zone, pending.status.label], [false, "example.co.uk", "Waiting for DNS"]);
 		assert.deepEqual(
@@ -133,7 +133,7 @@ describe("rules", () => {
 		const live = getWebsiteDomainSetup({ archiveHost: "news.example.com", websiteDomain: { host: "news.example.com", cnameFound: true, verification } }, { accountId, cnameTarget });
 		assert.deepEqual([live.isLive, live.status.label, live.steps.map(({ key }) => key)], [true, "Live", ["cname"]]);
 		const gone = getWebsiteDomainSetup({ archiveHost: "news.example.com", websiteDomain: { host: "news.example.com", cnameFound: false } }, { accountId, cnameTarget });
-		assert.deepEqual([gone.status.label, gone.steps[0].status.label], ["Not pointing at MailCheap", "Not found"]);
+		assert.deepEqual([gone.status.label, gone.steps[0].status.label], ["Not pointing at Sendz", "Not found"]);
 		const before = getWebsiteDomainSetup({ archiveHost: "letters.example.com" }, { accountId, cnameTarget });
 		assert.deepEqual([before.host, before.isLive, before.status.label], ["letters.example.com", true, "Live"], "a host from before website domains is live");
 		assert.equal(getWebsiteDomainSetup({ archiveHost: "letters.example.com" }, { accountId, cnameTarget: null }), null, "without a target: nothing to show");
@@ -151,12 +151,12 @@ describe("setting up", () => {
 		assert.deepEqual(
 			setup.setup.flatMap(({ records }) => records),
 			[
-				{ type: "CNAME", name: "news.site-owner.dev", host: "news", value: "cname.mailcheap.ai" },
+				{ type: "CNAME", name: "news.site-owner.dev", host: "news", value: "cname.sendz.ai" },
 				{ type: "TXT", name: ownership.name, host: "_mailcheap.news", value: ownership.value },
 			]
 		);
 
-		cnames.set("news.site-owner.dev", ["cname.mailcheap.ai"]);
+		cnames.set("news.site-owner.dev", ["cname.sendz.ai"]);
 		assert.deepEqual(await checkDomain(user), { ok: true, live: false, pointed: true });
 		assert.equal(projectHosts.has("news.site-owner.dev"), false, "nothing goes on the Vercel project before the TXT record proves it's theirs");
 
@@ -175,11 +175,11 @@ describe("setting up", () => {
 		assert.match(email.headers["List-Unsubscribe"], /^<https:\/\/news\.site-owner\.dev\/api\/unsubscribe\?token=/);
 	});
 
-	test("a CNAME left pointing at MailCheap isn't enough to claim someone's domain: each account needs its own TXT record", async () => {
+	test("a CNAME left pointing at Sendz isn't enough to claim someone's domain: each account needs its own TXT record", async () => {
 		const owner = await customer("left-owner@example.com", "left-notes");
 		assert.deepEqual(await addLiveWebsiteDomain(owner, "news.left-behind.dev"), { ok: true, live: true });
 		const squatter = await customer("squatter@example.com", "squat-notes");
-		assert.deepEqual(await setDomain(squatter, "news.left-behind.dev"), { error: "news.left-behind.dev is already used by another MailCheap newsletter" });
+		assert.deepEqual(await setDomain(squatter, "news.left-behind.dev"), { error: "news.left-behind.dev is already used by another Sendz newsletter" });
 
 		assert.deepEqual(await removeDomain(owner), { ok: true, removed: "news.left-behind.dev" });
 		assert.deepEqual(await setDomain(squatter, "news.left-behind.dev"), { ok: true, live: false }, "the owner's CNAME and TXT records are still there");
@@ -209,7 +209,7 @@ describe("setting up", () => {
 		await pointWebsiteDomain(user, "news.elsewhere.dev");
 		failNextAttach({ status: 409, message: "news.elsewhere.dev is on another Vercel project" });
 		assert.deepEqual(await setDomain(user, "news.elsewhere.dev"), {
-			error: "news.elsewhere.dev is used by another site on Vercel, where MailCheap runs. Remove it there, then check again.",
+			error: "news.elsewhere.dev is used by another site on Vercel, where Sendz runs. Remove it there, then check again.",
 		});
 		assert.equal(await m.Alert.exists({ accountId: null, key: "dns-helper-down" }), null, "the host's problem, not the helper's");
 
@@ -279,7 +279,7 @@ describe("one domain at a time", () => {
 		const user = await customer("legacy-site@example.com", "legacy-site");
 		await m.Newsletter.updateOne({ accountId: user.accountId, _id: user.newsletterId }, { $set: { archiveHost: "letters.legacy-site.dev" } });
 		assert.deepEqual([(await readSetup(user)).host, (await readSetup(user)).live], ["letters.legacy-site.dev", true]);
-		cnames.set("letters.legacy-site.dev", ["cname.mailcheap.ai"]);
+		cnames.set("letters.legacy-site.dev", ["cname.sendz.ai"]);
 		assert.deepEqual(await checkDomain(user), { ok: true, live: true, pointed: true }, "a live host doesn't need the TXT record");
 		assert.deepEqual(await removeDomain(user), { ok: true, removed: "letters.legacy-site.dev" });
 		assert.equal((await findNewsletter(user)).archiveHost, undefined);

@@ -22,7 +22,7 @@ import {
 	scaleSignupLimit,
 } from "../lib/plans.js";
 
-// Plans and the paywall are MailCheap Cloud's; the last test is a self-hosted server.
+// Plans and the paywall are Sendz Cloud's; the last test is a self-hosted server.
 process.env.MAILCHEAP_CLOUD = "true";
 
 function selfHosted(run) {
@@ -198,7 +198,7 @@ test("self-hosted, without MAILCHEAP_CLOUD: no paywall, no plan limits, every ac
 		const huge = { account: {}, emailsSent: 50_000_000, queued: 1_000_000, recipients: 2_000_000, activeContacts: 3_000_000 };
 		assert.equal(getPlanLimitProblem(huge), null);
 	});
-	assert.equal(getAccountSendProblem({}).code, ERROR_CODES.subscriptionRequired, "back on MailCheap Cloud");
+	assert.equal(getAccountSendProblem({}).code, ERROR_CODES.subscriptionRequired, "back on Sendz Cloud");
 });
 
 test("signup limits grow with the plan, from Starter's; a self-hosted server gets the largest plan's", () => {
